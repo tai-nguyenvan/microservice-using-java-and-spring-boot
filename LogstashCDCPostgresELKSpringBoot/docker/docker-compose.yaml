@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  elasticsearch:
+    build: ./elasticsearch/
+    volumes:
+      - /usr/share/elasticsearch/config
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    networks:
+      - es-network
+
+  postgres:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres@2024
+      - POSTGRES_DATABASE=product
+    ports:
+      - "5432:5432"
+    networks:
+     - es-network
+
+  logstash:
+    build: ./logstash/
+    volumes:
+      - /usr/share/logstash/pipeline
+      - /usr/share/logstash/drivers
+    environment:
+      - xpack.monitoring.elasticsearch.hosts=http://elasticsearch:9200
+    ports:
+      - "5044:5044"
+    networks:
+      - es-network
+
+networks:
+  es-network:
+    driver: bridge

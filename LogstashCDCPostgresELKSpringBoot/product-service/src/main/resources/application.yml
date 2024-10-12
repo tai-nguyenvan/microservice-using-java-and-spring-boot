@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  application.name: order-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product
+    username: postgres
+    password: postgres@2024
+  jpa.hibernate.ddl-auto: update
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  # SWAGGER
+  springdoc:
+    swagger-ui.path: /swagger-ui.html
+    api-docs.path: /v1/api-docs
